@@ -47,7 +47,6 @@ class TestUser(UserAPITestCase):
     url = reverse_lazy('user-list')
 
     def test_create(self):
-        count = User.objects.count()
         response = self.client.post(self.url, data=self.get_user_data())
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         response = self.client.post(self.url, data=self.get_incorrect_user_data())

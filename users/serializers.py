@@ -4,14 +4,16 @@ from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'password', 'can_be_contacted',
                   'can_data_be_shared', 'age')
 
 
-    def validate(self, data):
-        if data['age'] <= 15:
-            raise serializers.ValidationError("You must have at least 15 years old to "
-                                             "share your data.")
-        return data
+    def validate_age(self, value):
+        if value < 15:
+            raise serializers.ValidationError("Vous devez avoir au moins 15 ans pour "
+                                              "vous inscrire.")
+        return value

@@ -19,9 +19,11 @@ from django.urls import path, include
 from rest_framework import routers
 
 from users.views import UserViewSet
+from projects.views import ProjectViewSet
 
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 router.register('user', UserViewSet, basename='user')
+router.register('project', ProjectViewSet, basename='project')
 
 
 urlpatterns = [

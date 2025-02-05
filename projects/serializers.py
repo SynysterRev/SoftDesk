@@ -24,7 +24,7 @@ class ProjectListSerializer(serializers.ModelSerializer):
 class ProjectDetailSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     contributors = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(),
-                                    many=True, required=False)
+                                                      many=True, required=False)
 
 
     class Meta:
@@ -76,6 +76,7 @@ class CommentListSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ('uuid', 'author', 'issue', 'created_time')
 
+
 class CommentDetailSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
         'issue_pk': 'issue__pk',
@@ -83,6 +84,7 @@ class CommentDetailSerializer(NestedHyperlinkedModelSerializer):
     }
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     issue = serializers.PrimaryKeyRelatedField(read_only=True)
+
 
     class Meta:
         model = Comment

@@ -69,7 +69,8 @@ class Issue(models.Model):
 
 
 class Comment(models.Model):
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False,
+                            unique=True)
     description = models.TextField(blank=True)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE,
                               related_name="comments")

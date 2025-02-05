@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
-from projects.models import Project, Issue
+from projects.models import Project, Issue, Comment
 from users.models import User
 
 
@@ -69,3 +69,21 @@ class IssueDetailSerializer(NestedHyperlinkedModelSerializer):
         model = Issue
         fields = ('id', 'title', 'description', 'author', 'status', 'priority', 'tag',
                   'assigned_to', 'project', 'created_time')
+
+
+class CommentListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('uuid', 'author', 'issue', 'created_time')
+
+class CommentDetailSerializer(NestedHyperlinkedModelSerializer):
+    parent_lookup_kwargs = {
+        'issue_pk': 'issue__pk',
+        'project_pk': 'issue__project__pk',
+    }
+    author = serializers.PrimaryKeyRelatedField(read_only=True)
+    issue = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ('uuid', 'description', 'author', 'issue', 'created_time')

@@ -23,16 +23,16 @@ from users.views import UserViewSet
 from projects.views import ProjectViewSet, IssueViewSet, CommentViewSet
 
 router = routers.DefaultRouter()
-router.register('users', UserViewSet, basename='users')
-router.register('projects', ProjectViewSet, basename='projects')
+router.register('users', UserViewSet, basename='user')
+router.register('projects', ProjectViewSet, basename='project')
 
 projects_router = routers.NestedSimpleRouter(router,
                                           r'projects',
                                           lookup='project')
-projects_router.register(r'issues', IssueViewSet, basename='issues')
+projects_router.register(r'issues', IssueViewSet, basename='issue')
 
 issues_router = routers.NestedSimpleRouter(projects_router, r'issues', lookup='issue')
-issues_router.register(r'comments', CommentViewSet, basename='comments')
+issues_router.register(r'comments', CommentViewSet, basename='comment')
 
 
 urlpatterns = [

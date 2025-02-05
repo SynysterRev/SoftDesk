@@ -3,7 +3,8 @@ from rest_framework.response import Response
 
 from projects.models import Project, Contributor, Issue, Comment
 from projects.serializers import (ProjectListSerializer, ProjectDetailSerializer,
-                                  IssueListSerializer, IssueDetailSerializer)
+                                  IssueListSerializer, IssueDetailSerializer,
+                                  CommentListSerializer, CommentDetailSerializer)
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -44,17 +45,16 @@ class IssueViewSet(viewsets.ModelViewSet):
         return super().get_serializer_class()
 
 class CommentViewSet(viewsets.ModelViewSet):
-    pass
-    # serializer_class = CommentDetailSerializer
-    #
-    # def get_queryset(self):
-    #     return Comment.objects.filter(issue=self.kwargs['issue_pk'])
-    #
-    # def perform_create(self, serializer):
-    #     issue = Issue.objects.get(pk=self.kwargs['issue_pk'])
-    #     serializer.save(author=self.request.user, issue=issue)
-    #
-    # def get_serializer_class(self):
-    #     if self.action == "list":
-    #         return CommentListSerializer
-    #     return super().get_serializer_class()
+    serializer_class = CommentDetailSerializer
+
+    def get_queryset(self):
+        return Comment.objects.filter(issue=self.kwargs['issue_pk'])
+
+    def perform_create(self, serializer):
+        issue = Issue.objects.get(pk=self.kwargs['issue_pk'])
+        serializer.save(author=self.request.user, issue=issue)
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return CommentListSerializer
+        return super().get_serializer_class()

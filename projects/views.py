@@ -1,6 +1,6 @@
 from django.db.models import Q
 from rest_framework import viewsets, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from projects.models import Project, Contributor, Issue, Comment
@@ -13,7 +13,7 @@ from projects.serializers import (ProjectListSerializer, ProjectDetailSerializer
 class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectDetailSerializer
     queryset = Project.objects.all()
-    permission_classes = [IsAuthenticated, IsAuthorOrContributor]
+    permission_classes = [IsAuthenticated, (IsAdminUser | IsAuthorOrContributor)]
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
@@ -34,6 +34,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        if user.is_staff:
+            return Project.objects.all()
         queryset = Project.objects.filter(
             Q(author=user) | Q(project_contributors__user=user)).distinct()
         return queryset
@@ -42,7 +44,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 class IssueViewSet(viewsets.ModelViewSet):
     serializer_class = IssueDetailSerializer
     queryset = Issue.objects.all().select_related('project')
-    permission_classes = [IsAuthenticated, IsAuthorOrContributor]
+    permission_classes = [IsAuthenticated, (IsAdminUser | IsAuthorOrContributor)]
 
     def get_queryset(self):
         return Issue.objects.filter(project=self.kwargs['project_pk'])
@@ -59,7 +61,7 @@ class IssueViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentDetailSerializer
-    permission_classes = [IsAuthenticated, IsAuthorOrContributor]
+    permission_classes = [IsAuthenticated, (IsAdminUser | IsAuthorOrContributor)]
 
     def get_queryset(self):
         return Comment.objects.filter(issue=self.kwargs['issue_pk'])

@@ -9,7 +9,7 @@ Poetry version 2.0.1
    - Sur windows : clic-droit puis ouvrir dans le terminal.
    - Sur Mac : ouvrir un terminal puis glisser-déposer le dossier directement dans le terminal.
 3. Installer poetry si vous le n'avez pas ```pip install poetry```
-4. Créer l'environnement virtuel et installer les dépendances& avec ```poetry install```
+4. Créer l'environnement virtuel et installer les dépendances avec ```poetry install```
 5. Activez l'environnement virtuel avec ```.venv\Scripts\activate.bat``` sous windows ou ```eval $(poetry env activate)``` sous macos ou linux. (au besoin https://python-poetry.org/docs/managing-environments/#activating-the-environment)
 6. Démarrez le serveur avec ```$ python manage.py runserver```
 

@@ -16,7 +16,7 @@ Poetry version 2.0.1
 # Documentation de l'API
 https://documenter.getpostman.com/view/40327893/2sAYXBEyWR
 
-# Utilisateur
+# Utilisateurs
 | Nom utilisateur | Mot de passe |
 | ------------- | ------------- |
 | admin  | admin  |

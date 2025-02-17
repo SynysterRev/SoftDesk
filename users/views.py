@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from users.permissions import SelfResourceAccess
 from users.models import User
 from users.serializers import UserSerializer
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAdminUser
 
 
 class UserViewSet(viewsets.ModelViewSet):

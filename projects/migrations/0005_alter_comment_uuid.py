@@ -7,13 +7,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('projects', '0004_issue_comment'),
+        ("projects", "0004_issue_comment"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='comment',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False, unique=True),
+            model_name="comment",
+            name="uuid",
+            field=models.UUIDField(
+                default=uuid.uuid4,
+                editable=False,
+                primary_key=True,
+                serialize=False,
+                unique=True,
+            ),
         ),
     ]

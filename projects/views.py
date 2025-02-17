@@ -5,9 +5,14 @@ from rest_framework.response import Response
 
 from projects.models import Project, Contributor, Issue, Comment
 from projects.permissions import IsAuthorOrContributor
-from projects.serializers import (ProjectListSerializer, ProjectDetailSerializer,
-                                  IssueListSerializer, IssueDetailSerializer,
-                                  CommentListSerializer, CommentDetailSerializer)
+from projects.serializers import (
+    ProjectListSerializer,
+    ProjectDetailSerializer,
+    IssueListSerializer,
+    IssueDetailSerializer,
+    CommentListSerializer,
+    CommentDetailSerializer,
+)
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -17,7 +22,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        project = Project.objects.get(id=response.data['id'])
+        project = Project.objects.get(id=response.data["id"])
         user = request.user
         Contributor.objects.get_or_create(user=user, project=project)
         for contributor in project.contributors.all():
@@ -37,20 +42,21 @@ class ProjectViewSet(viewsets.ModelViewSet):
         if user.is_staff:
             return Project.objects.all()
         queryset = Project.objects.filter(
-            Q(author=user) | Q(project_contributors__user=user)).distinct()
+            Q(author=user) | Q(project_contributors__user=user)
+        ).distinct()
         return queryset
 
 
 class IssueViewSet(viewsets.ModelViewSet):
     serializer_class = IssueDetailSerializer
-    queryset = Issue.objects.all().select_related('project')
+    queryset = Issue.objects.all().select_related("project")
     permission_classes = [IsAuthenticated, (IsAdminUser | IsAuthorOrContributor)]
 
     def get_queryset(self):
-        return Issue.objects.filter(project=self.kwargs['project_pk'])
+        return Issue.objects.filter(project=self.kwargs["project_pk"])
 
     def perform_create(self, serializer):
-        project = Project.objects.get(pk=self.kwargs['project_pk'])
+        project = Project.objects.get(pk=self.kwargs["project_pk"])
         serializer.save(author=self.request.user, project=project)
 
     def get_serializer_class(self):
@@ -64,10 +70,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, (IsAdminUser | IsAuthorOrContributor)]
 
     def get_queryset(self):
-        return Comment.objects.filter(issue=self.kwargs['issue_pk'])
+        return Comment.objects.filter(issue=self.kwargs["issue_pk"])
 
     def perform_create(self, serializer):
-        issue = Issue.objects.get(pk=self.kwargs['issue_pk'])
+        issue = Issue.objects.get(pk=self.kwargs["issue_pk"])
         serializer.save(author=self.request.user, issue=issue)
 
     def get_serializer_class(self):

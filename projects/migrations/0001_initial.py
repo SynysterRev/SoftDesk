@@ -15,28 +15,80 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Contributor',
+            name="Contributor",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_time', models.DateTimeField(auto_now_add=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_time", models.DateTimeField(auto_now_add=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Project',
+            name="Project",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100)),
-                ('description', models.TextField(blank=True)),
-                ('type', models.CharField(choices=[('back-end', 'Backend'), ('front-end', 'Frontend'), ('iOS', 'Ios'), ('android', 'Android')], default='back-end', max_length=10)),
-                ('created_time', models.DateTimeField(auto_now_add=True)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='projects', to=settings.AUTH_USER_MODEL)),
-                ('contributors', models.ManyToManyField(related_name='contributions', through='projects.Contributor', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=100)),
+                ("description", models.TextField(blank=True)),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("back-end", "Backend"),
+                            ("front-end", "Frontend"),
+                            ("iOS", "Ios"),
+                            ("android", "Android"),
+                        ],
+                        default="back-end",
+                        max_length=10,
+                    ),
+                ),
+                ("created_time", models.DateTimeField(auto_now_add=True)),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="projects",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "contributors",
+                    models.ManyToManyField(
+                        related_name="contributions",
+                        through="projects.Contributor",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='contributor',
-            name='project',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='project_contributors', to='projects.project'),
+            model_name="contributor",
+            name="project",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="project_contributors",
+                to="projects.project",
+            ),
         ),
     ]

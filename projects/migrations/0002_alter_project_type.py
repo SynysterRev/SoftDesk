@@ -6,13 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('projects', '0001_initial'),
+        ("projects", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='project',
-            name='type',
-            field=models.CharField(choices=[('back-end', 'Back-end'), ('front-end', 'Front-end'), ('iOS', 'iOS'), ('android', 'Android')], default='back-end', max_length=10),
+            model_name="project",
+            name="type",
+            field=models.CharField(
+                choices=[
+                    ("back-end", "Back-end"),
+                    ("front-end", "Front-end"),
+                    ("iOS", "iOS"),
+                    ("android", "Android"),
+                ],
+                default="back-end",
+                max_length=10,
+            ),
         ),
     ]

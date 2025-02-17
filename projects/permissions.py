@@ -7,9 +7,10 @@ from projects.models import Project, Issue, Contributor, Comment
 class IsAuthorOrContributor(BasePermission):
 
     def has_permission(self, request, view):
-        if 'project_pk' in view.kwargs:
-            return Contributor.objects.filter(user=request.user, project=view.kwargs[
-                'project_pk']).exists()
+        if "project_pk" in view.kwargs:
+            return Contributor.objects.filter(
+                user=request.user, project=view.kwargs["project_pk"]
+            ).exists()
         return True
 
     def has_object_permission(self, request, view, obj):
@@ -25,7 +26,11 @@ class IsAuthorOrContributor(BasePermission):
             else:
                 return False
 
-            return bool(request.user and Contributor.objects.filter(
-                user=request.user, project=project).exists())
+            return bool(
+                request.user
+                and Contributor.objects.filter(
+                    user=request.user, project=project
+                ).exists()
+            )
 
         return False

@@ -19,20 +19,26 @@ class ContributorsSlugRelatedField(SlugRelatedField):
 class ProjectListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('id', 'title', 'type', 'author', 'created_time')
+        fields = ("id", "title", "type", "author", "created_time")
 
 
 class ProjectDetailSerializer(serializers.HyperlinkedModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
-    contributors = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(),
-                                                      many=True, required=False)
-
+    contributors = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), many=True, required=False
+    )
 
     class Meta:
         model = Project
-        fields = ('id', 'title', 'description', 'type', 'author', 'created_time',
-                  'contributors')
-
+        fields = (
+            "id",
+            "title",
+            "description",
+            "type",
+            "author",
+            "created_time",
+            "contributors",
+        )
 
     def create(self, validated_data):
         instance = super().create(validated_data)
@@ -64,56 +70,73 @@ class IssueListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Issue
-        fields = ('id', 'title', 'author', 'status', 'priority', 'tag', 'assigned_to',
-                  'project', 'created_time')
+        fields = (
+            "id",
+            "title",
+            "author",
+            "status",
+            "priority",
+            "tag",
+            "assigned_to",
+            "project",
+            "created_time",
+        )
 
 
 class IssueDetailSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
-        'project_pk': 'project__pk',
+        "project_pk": "project__pk",
     }
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     project = serializers.SerializerMethodField(read_only=True)
 
-
     class Meta:
         model = Issue
-        fields = ('id', 'title', 'description', 'author', 'status', 'priority', 'tag',
-                  'assigned_to', 'project', 'created_time')
-
+        fields = (
+            "id",
+            "title",
+            "description",
+            "author",
+            "status",
+            "priority",
+            "tag",
+            "assigned_to",
+            "project",
+            "created_time",
+        )
 
     def get_project(self, instance):
-        project_url = reverse('project-detail', kwargs={'pk': instance.project.id})
+        project_url = reverse("project-detail", kwargs={"pk": instance.project.id})
         return {
-            'id': instance.project.id,
-            'url': self.context.get('request').build_absolute_uri(project_url)
+            "id": instance.project.id,
+            "url": self.context.get("request").build_absolute_uri(project_url),
         }
 
 
 class CommentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('uuid', 'author', 'issue', 'created_time')
+        fields = ("uuid", "author", "issue", "created_time")
 
 
 class CommentDetailSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
-        'issue_pk': 'issue__pk',
-        'project_pk': 'issue__project__pk',
+        "issue_pk": "issue__pk",
+        "project_pk": "issue__project__pk",
     }
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     issue = serializers.SerializerMethodField(read_only=True)
 
-
     class Meta:
         model = Comment
-        fields = ('uuid', 'description', 'author', 'issue', 'created_time')
-
+        fields = ("uuid", "description", "author", "issue", "created_time")
 
     def get_issue(self, instance):
-        issue_url = reverse('issue-detail', kwargs={
-            'project_pk': instance.issue.project.id, 'pk': instance.issue.id})
+        issue_url = reverse(
+            "issue-detail",
+            kwargs={"project_pk": instance.issue.project.id, "pk": instance.issue.id},
+        )
         return {
-            'id': instance.issue.id,
-            'url': self.context.get('request').build_absolute_uri(issue_url)
+            "id": instance.issue.id,
+            "url": self.context.get("request").build_absolute_uri(issue_url),
         }

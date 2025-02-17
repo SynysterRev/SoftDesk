@@ -55,18 +55,8 @@ class ProjectDetailSerializer(serializers.HyperlinkedModelSerializer):
             updated_instance.save()
         return updated_instance
 
-    # def validate_contributors(self, value):
-    #     instance = self.instance
-    #     if instance:
-    #         author = instance.author
-    #         if author not in value:
-    #             raise serializers.ValidationError(
-    #                 "L'auteur du projet doit faire parti des contributeurs.")
-    #     return value
-
 
 class IssueListSerializer(serializers.ModelSerializer):
-    # project = serializers.HyperlinkedModelSerializer(read_only=True)
 
     class Meta:
         model = Issue

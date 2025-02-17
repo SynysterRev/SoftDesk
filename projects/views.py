@@ -1,5 +1,6 @@
 from django.db.models import Q
 from rest_framework import viewsets, status
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
@@ -17,7 +18,6 @@ from projects.serializers import (
 
 class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectDetailSerializer
-    queryset = Project.objects.all()
     permission_classes = [IsAuthenticated, (IsAdminUser | IsAuthorOrContributor)]
 
     def create(self, request, *args, **kwargs):
@@ -49,7 +49,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
 class IssueViewSet(viewsets.ModelViewSet):
     serializer_class = IssueDetailSerializer
-    queryset = Issue.objects.all().select_related("project")
     permission_classes = [IsAuthenticated, (IsAdminUser | IsAuthorOrContributor)]
 
     def get_queryset(self):
@@ -57,6 +56,11 @@ class IssueViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         project = Project.objects.get(pk=self.kwargs["project_pk"])
+        assigned_to = serializer.validated_data.get("assigned_to")
+        if assigned_to and not Contributor.objects.filter(project=project,
+                                   user=assigned_to).exists():
+            raise ValidationError({"assigned_to": "L'utilisateur doit être un contributeur du projet."})
+
         serializer.save(author=self.request.user, project=project)
 
     def get_serializer_class(self):

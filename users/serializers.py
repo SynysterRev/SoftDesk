@@ -33,6 +33,6 @@ class UserSerializer(serializers.ModelSerializer):
     def validate_age(self, value):
         if value < 15:
             raise serializers.ValidationError(
-                "Vous devez avoir au moins 15 ans pour " "vous inscrire."
+                "Vous devez avoir au moins 15 ans pour vous inscrire."
             )
         return value

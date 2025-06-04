@@ -1,10 +1,28 @@
-# Softdesk
+# SoftDesk - API de Gestion de Projets
 
-Python version 3.12.6
+Une API REST complète pour la gestion de projets collaboratifs, développée avec Django REST Framework.
 
-Poetry version 2.0.1
+## Fonctionnalités
 
-# Installation
+- **Authentification JWT** sécurisée
+- **Gestion de projets** avec CRUD complet
+- **Système de tickets/issues** 
+- **Gestion des contributeurs** et permissions
+- **API RESTful** avec documentation Postman
+- **Permissions granulaires** par rôle
+
+## Technologies
+
+- Python 3.12
+- Django REST Framework
+- JWT Authentication
+- Poetry pour la gestion des dépendances
+- PostgreSQL/SQLite
+
+## Documentation de l'API
+https://documenter.getpostman.com/view/40327893/2sAYXBEyWR
+
+## Installation
 1. Clonez le dépôt ou télécharger une archive.
 2. Rendez-vous depuis un terminal dans la racine du répertoire
    - Sur windows : clic-droit puis ouvrir dans le terminal.
@@ -14,10 +32,7 @@ Poetry version 2.0.1
 5. Activez l'environnement virtuel avec ```.venv\Scripts\activate.bat``` sous windows ou ```eval $(poetry env activate)``` sous macos ou linux. (au besoin https://python-poetry.org/docs/managing-environments/#activating-the-environment)
 6. Démarrez le serveur avec ```$ python manage.py runserver```
 
-# Documentation de l'API
-https://documenter.getpostman.com/view/40327893/2sAYXBEyWR
-
-# Utilisateurs
+## Utilisateurs
 | Nom utilisateur | Mot de passe |
 | ------------- | ------------- |
 | admin  | admin  |
